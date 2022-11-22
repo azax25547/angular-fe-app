@@ -1,5 +1,9 @@
 export interface IndianExpress {
-    indianExpressHeadings: [string],
-    indianExpressNewsTypes: [string],
-    indianExpressHeadingsLinks: [string]
+    data: [{
+        heading: string,
+        link: string,
+        type: string
+    }];
+    success: boolean;
+    type: string;
 }

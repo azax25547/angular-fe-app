@@ -1,29 +1,34 @@
-<button class="btn btn-primary" type="button" (click)="getNews()">
-    Indian Express
-</button>
-<button class="btn btn-info" (click)="clear()">Clear</button>
-
-<div *ngIf="news">
-    <div *ngFor="let n of news.indianExpressHeadings">
-        <div class="card">
-
-            <div class="card-body">
-                <p class="card-text">{{ n }}</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            <div class="card-footer text-muted">
-                2 days ago
-            </div>
-        </div>
-
-
-    </div>
+<div class="btn-group" role="group" aria-label="News Group Buttons">
+    <button class="btn btn-secondary mr-2" type="button" (click)="getNews()">
+        Indian Express
+    </button>
+    <span *ngIf="news?.success">
+        <button class="btn btn-info mx-2" (click)="clear()">Clear</button>
+    </span>
 </div>
 
 
+
 <div *ngIf="error">
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
         Unable to fetch records from server
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+<span *ngIf="isLoading"> ... LOADING...</span>
+<div *ngIf="news?.success">
+
+    <div class="list-group">
+
+        <div *ngFor="let n of news?.data">
+            <div class="list-group-item list-group-item-action flex-column align-items-start my-3">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{n.heading}}</h5>
+                    <small>{{n.type | titlecase}}</small>
+                </div>
+                <!-- <a class="mb-1" [href]="n.link" target="_blank">Go to Website</a> -->
+                <small>View Here...(Coming Soon)</small>
+            </div>
+        </div>
     </div>
 </div>

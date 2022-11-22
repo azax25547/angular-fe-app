@@ -10,14 +10,17 @@ import { NewsService } from './news.service';
 export class NewsComponent {
   error: any;
   news: IndianExpress | undefined;
+  isLoading: boolean = false;
+
   constructor(private ns: NewsService) {
 
   }
 
   getNews() {
+    this.isLoading = true;
     this.ns.getNews()
       .subscribe({
-        next: (data: IndianExpress) => { this.news = { ...data }; console.log(data) },
+        next: (data: IndianExpress) => { this.news = data; this.isLoading = false },
         error: er => this.error = er
       });
   }
