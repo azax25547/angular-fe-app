@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { NewsComponent } from './news/news.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     NewsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

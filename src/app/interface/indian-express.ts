@@ -1,8 +1,9 @@
-export interface IndianExpress {
+export interface News {
     data: [{
         heading: string,
         link: string,
-        type: string
+        type?: string,
+        shortDescription?: string
     }];
     success: boolean;
     type: string;

@@ -1,13 +1,30 @@
-<div class="btn-group" role="group" aria-label="News Group Buttons">
+<!-- <div class="btn-group" role="group" aria-label="News Group Buttons">
     <button class="btn btn-secondary mr-2" type="button" (click)="getNews()">
         Indian Express
     </button>
     <span *ngIf="news?.success">
         <button class="btn btn-info mx-2" (click)="clear()">Clear</button>
     </span>
+</div> -->
+
+<div class="w-100">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-danger" style="margin-top: 9px;" (click)="clear()"
+                [disabled]="checkNews()">Clear</button>
+
+        </div>
+
+        <select class="form-select border-0 mx-1" id="inputGroupSelect01" (change)="onOptionSelect($event)">
+            <option class="text-center" selected>Choose News Service</option>
+            <option class="text-center" value="ie">Indian Express</option>
+            <option class="text-center" value="toi">Times of India</option>
+            <option class="text-center" value="ht">Hindustan Times</option>
+            <option class="text-center" value="otv">OTV</option>
+        </select>
+    </div>
+
 </div>
-
-
 
 <div *ngIf="error">
     <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
@@ -15,20 +32,30 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 </div>
-<span *ngIf="isLoading"> ... LOADING...</span>
+
+<div *ngIf="isLoading" class="d-flex justify-content-center">
+    <div class="spinner-border m-5" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+
 <div *ngIf="news?.success">
 
     <div class="list-group">
 
         <div *ngFor="let n of news?.data">
-            <div class="list-group-item list-group-item-action flex-column align-items-start my-3">
+            <div class="list-group-item list-group-item-action flex-column align-items-start my-3"
+                style="height: 200px;">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{n.heading}}</h5>
                     <small>{{n.type | titlecase}}</small>
                 </div>
-                <!-- <a class="mb-1" [href]="n.link" target="_blank">Go to Website</a> -->
-                <small>View Here...(Coming Soon)</small>
+                <a class="m-1" [href]="n.link" target="_blank">Check Here</a>
+                <small class="m-2 px-2" *ngIf="n.shortDescription">{{n.shortDescription}}</small>
             </div>
         </div>
     </div>
+
+    <div class="text-center"><button class="btn btn-light" (click)="loadMore()">Load More</button></div>
 </div>
