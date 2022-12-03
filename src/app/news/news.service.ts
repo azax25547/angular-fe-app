@@ -11,10 +11,10 @@ export class NewsService {
   constructor(private http: HttpClient) { }
 
   getNews(news: String): Observable<News> {
-    return this.http.get<News>(`http://18.205.239.206::4500/v1/api/ca/news/${news}`)
+    return this.http.get<News>(`https://stingray-app-fnnzr.ondigitalocean.app/v1/api/ca/news/${news}`)
   }
 
   getMoreNews(news: String, page: number): Observable<News> {
-    return this.http.get<News>(`http://18.205.239.206::4500/v1/api/ca/news/${news}?page=${page}`)
+    return this.http.get<News>(`https://stingray-app-fnnzr.ondigitalocean.app/v1/api/ca/news/${news}?page=${page}`)
   }
 }
