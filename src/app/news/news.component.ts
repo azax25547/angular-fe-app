@@ -1,5 +1,5 @@
 import { News } from '../interface/indian-express';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NewsService } from './news.service';
 
 @Component({
@@ -13,13 +13,17 @@ export class NewsComponent {
   isLoading: boolean = false;
   selectedNewsService: string = "";
   pageNumber: number = 1;
+  formModal: any;
+
 
   constructor(private ns: NewsService) {
 
   }
 
+
   private _getNews(newsService: string) {
     this.isLoading = true;
+    this.news = undefined;
     this.ns.getNews(newsService)
       .subscribe({
         next: (data: News) => { this.news = data; this.isLoading = false },
@@ -78,6 +82,9 @@ export class NewsComponent {
 
       default: console.log(0)
     }
+  }
+
+  readMore() {
   }
 
 }

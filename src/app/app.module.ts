@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { NewsComponent } from './news/news.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { HomeComponent } from './home/home.component';
+import { NewsModalComponent } from './news-modal/news-modal.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { HomeComponent } from './home/home.component';
     HeaderComponent,
     NewsComponent,
     SpinnerComponent,
-    HomeComponent
+    HomeComponent,
+    NewsModalComponent
   ],
   imports: [
     BrowserModule,
