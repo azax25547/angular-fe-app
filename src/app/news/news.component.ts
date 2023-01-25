@@ -15,18 +15,26 @@ export class NewsComponent {
   pageNumber: number = 1;
   formModal: any;
 
+  newsTitle: string = 'Hello There';
+  newsContents: any = {};
 
   constructor(private ns: NewsService) {
 
   }
 
-
+  private _checkIfErrorResponse(data: any) {
+    if (!data.success || !data.status)
+      this.error = "Unable to parse data from backend. Please contact Dev."
+    return false
+  }
   private _getNews(newsService: string) {
     this.isLoading = true;
     this.news = undefined;
     this.ns.getNews(newsService)
       .subscribe({
-        next: (data: News) => { this.news = data; this.isLoading = false },
+        next: (data: News) => {
+          this.news = data; this.isLoading = false
+        },
         error: er => { this.error = er; this.isLoading = false; }
       });
   }
@@ -36,8 +44,21 @@ export class NewsComponent {
     this.isLoading = true;
     this.ns.getMoreNews(selectedNewsService, page)
       .subscribe({
-        next: (data: News) => { this.news = data; this.isLoading = false; },
+        next: (data: News) => {
+          this.news = data; this.isLoading = false;
+        },
         error: er => { this.error = er; this.isLoading = false; }
+      })
+  }
+
+  private _getNewsContent(selectedNewsService: string, url: string) {
+    this.ns.getNewsContent(selectedNewsService, url)
+      .subscribe({
+        next: (data: any) => {
+          if (data.success)
+            this.newsContents = data.data;
+        },
+        error: er => { this.error = er }
       })
   }
 
@@ -84,7 +105,9 @@ export class NewsComponent {
     }
   }
 
-  readMore() {
+  readMore(news: any) {
+    this.newsTitle = news.heading
+    this._getNewsContent(this.selectedNewsService, news.link);
   }
 
 }
