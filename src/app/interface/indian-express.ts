@@ -1,10 +1,9 @@
 export interface News {
     data: [{
-        heading: string,
-        link: string,
-        type?: string,
-        shortDescription?: string
+        news: string,
+        url: string,
+        type?: string
     }];
     success: boolean;
-    type: string;
+    message?: string;
 }
