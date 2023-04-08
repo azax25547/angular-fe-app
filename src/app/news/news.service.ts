@@ -10,14 +10,13 @@ import { EnvService } from '../services/env.service';
 export class NewsService {
 
   constructor(private http: HttpClient, private env: EnvService) {
-    if (env.apiUrl)
-      console.log(env.apiUrl);
+
   }
 
-
-  newsServiceURL: string = this.env.enableDebuf ? "http://localhost:4500/v1/api/news/" : "https://scrap-node.onrender.com/v1/api/news/";
+  newsServiceURL: string = this.env.enableDebug ? "http://localhost:4500/v1/api/news/" : "https://scrap-node.onrender.com/v1/api/news/";
 
   _constructURL(p1: string, p2: string, path: string) {
+    console.log(this.env.enableDebug)
     const url = new URL(path, this.newsServiceURL);
 
     url.searchParams.append('url', p1)

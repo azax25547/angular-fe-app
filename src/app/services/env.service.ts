@@ -6,6 +6,6 @@ import { Injectable } from '@angular/core';
 export class EnvService {
 
   public apiUrl = '';
-  public enableDebuf = true;
+  public enableDebug = true;
   constructor() { }
 }
