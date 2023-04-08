@@ -2,23 +2,42 @@ import { News } from '../interface/indian-express';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { EnvService } from '../services/env.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewsService {
 
-  constructor(private http: HttpClient) { }
-
-  getNews(news: String): Observable<News> {
-    return this.http.get<News>(`https://panicky-handkerchief-hare.cyclic.app/v1/api/ca/news/${news}`)
+  constructor(private http: HttpClient, private env: EnvService) {
+    if (env.apiUrl)
+      console.log(env.apiUrl);
   }
 
-  getMoreNews(news: String, page: number): Observable<News> {
-    return this.http.get<News>(`https://panicky-handkerchief-hare.cyclic.app/v1/api/ca/news/${news}?page=${page}`)
+
+  newsServiceURL: string = this.env.enableDebuf ? "http://localhost:4500/v1/api/news/" : "https://scrap-node.onrender.com/v1/api/news/";
+
+  _constructURL(p1: string, p2: string, path: string) {
+    const url = new URL(path, this.newsServiceURL);
+
+    url.searchParams.append('url', p1)
+    url.searchParams.append('source', p2);
+
+    return url.toString();
   }
 
-  getNewsContent(news: String, url: string): Observable<any> {
-    return this.http.post(`https://panicky-handkerchief-hare.cyclic.app/v1/api/ca/news/${news}`, { url })
+  getNews(url: string, source: string): Observable<News> {
+    const newsURL = this._constructURL(url, source, "today");
+    return this.http.get<News>(newsURL);
+  }
+
+  getMoreNews(url: string, source: string): Observable<News> {
+    const newsURL = this._constructURL(url, source, "today");
+    return this.http.get<News>(newsURL);
+  }
+
+  getNewsContent(url: string, source: string): Observable<any> {
+    const newsURL = this._constructURL(url, source, "content");
+    return this.http.get(newsURL);
   }
 }

@@ -9,6 +9,7 @@ import { NewsComponent } from './news/news.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { HomeComponent } from './home/home.component';
 import { NewsModalComponent } from './news-modal/news-modal.component';
+import { EnvServiceProvider } from './services/env.service.provider';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { NewsModalComponent } from './news-modal/news-modal.component';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [EnvServiceProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
