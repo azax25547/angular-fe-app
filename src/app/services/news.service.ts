@@ -2,7 +2,7 @@ import { News } from '../interface/indian-express';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { EnvService } from '../services/env.service';
+import { EnvService } from './env.service';
 
 @Injectable({
   providedIn: 'root'

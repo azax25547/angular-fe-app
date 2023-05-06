@@ -59,8 +59,7 @@
         </div>
     </div>
 
-    <div class="text-center"><button class="btn btn-light" *ngIf="selectedNewsService !== 'ie'"
-            (click)="loadMore()">Load More</button></div>
+    <div class="text-center"><button class="btn btn-light" (click)="loadMore()">Load More</button></div>
 
     <app-news-modal [newsTitle]="newsTitle" [newsContents]="newsContents"></app-news-modal>
 </div>

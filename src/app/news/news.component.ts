@@ -1,6 +1,6 @@
 import { News } from '../interface/indian-express';
 import { Component, OnInit } from '@angular/core';
-import { NewsService } from './news.service';
+import { NewsService } from '../services/news.service';
 import getNewsURL from '../utils/getNewsURL';
 
 @Component({
@@ -42,11 +42,36 @@ export class NewsComponent {
       })
   }
 
+  private _getPaginatedURL(newsService: string, newsURL: string, page: number): string {
+    let baseNewsString = ``;
+    switch (newsService) {
+
+      case "ie":
+        baseNewsString = `${newsURL}/page/${page}`;
+        break;
+      case "otv":
+        baseNewsString = `${newsURL}/${page}`;
+        break;
+      case "toi":
+        baseNewsString = `${newsURL}/${page}`;
+        break;
+      case "ht":
+        baseNewsString = `${newsURL}/page-${page}`;
+        break;
+
+      default: baseNewsString = `${newsURL}/page/${page}`
+    }
+
+    return baseNewsString;
+  }
+
   private _getMoreNews(selectedNewsService: string, page: number) {
     this.news = undefined;
     this.isLoading = true;
     const newsURL = getNewsURL(selectedNewsService);
-    const paginatedURL = selectedNewsService === "otv" ? `${newsURL}/${page}` : `${newsURL}/page-${page}`;
+
+    const paginatedURL = this._getPaginatedURL(selectedNewsService, newsURL, page);
+
     this.ns.getMoreNews(paginatedURL, selectedNewsService)
       .subscribe({
         next: (data: News) => {
