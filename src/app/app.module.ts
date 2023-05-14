@@ -10,6 +10,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { HomeComponent } from './home/home.component';
 import { NewsModalComponent } from './news-modal/news-modal.component';
 import { EnvServiceProvider } from './services/env.service.provider';
+import { NewsContentComponent } from './news-content/news-content.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { EnvServiceProvider } from './services/env.service.provider';
     NewsComponent,
     SpinnerComponent,
     HomeComponent,
-    NewsModalComponent
+    NewsContentComponent
   ],
   imports: [
     BrowserModule,

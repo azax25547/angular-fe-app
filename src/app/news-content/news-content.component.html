@@ -1,0 +1,30 @@
+<section class="py-2 my-1">
+    <!-- Back Button -->
+    <div class="container">
+        <div class="row px-5">
+            <a class="btn btn-outline-dark" routerLink="/news"> <- Back </a>
+        </div>
+    </div>
+</section>
+<section class="py-2 my-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-4 col-lg-4 d-flex align-items-center justify-content-center">
+                <img src="{{ newsContents?.data?.main_content_image }}" class="rounded mx-auto d-block img-fluid">
+            </div>
+            <div class="col-xs-12 col-md-8 col-lg-8 ">
+                <h5 class="display-5">{{ newsTitle }}</h5>
+                <br>
+                <p> <strong> Last Updated Time: {{ newsContents?.data?.news_updated_time }} {{
+                        newsContents?.data?.news_location
+                        }}</strong></p>
+                <small>By: <i>{{ newsContents?.data?.news_src }}</i></small>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <p *ngFor=" let content of newsContents?.data?.main_content">
+                {{content}}
+            </p>
+        </div>
+    </div>
+</section>
