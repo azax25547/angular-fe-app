@@ -81,17 +81,7 @@ export class NewsComponent {
       })
   }
 
-  private _getNewsContent(url: string, selectedNewsService: string) {
-    this.ns.getNewsContent(url, selectedNewsService)
-      .subscribe({
-        next: (data: any) => {
-          if (data.success)
-            this.newsContents = data;
-        },
-        error: er => { this.error = er }
-      })
 
-  }
 
   checkNews(): boolean {
     return this.news?.success ? false : (this.error ? false : true);
@@ -142,9 +132,9 @@ export class NewsComponent {
     }
   }
 
-  readMore(news: any) {
-    this.newsTitle = news.news
-    this._getNewsContent(news.url, this.selectedNewsService);
-  }
+  // readMore(news: any) {
+  //   this.newsTitle = news.news
+  //   this._getNewsContent(news.url, this.selectedNewsService);
+  // }
 
 }
