@@ -1,65 +1,83 @@
-<!-- <div class="btn-group" role="group" aria-label="News Group Buttons">
-    <button class="btn btn-secondary mr-2" type="button" (click)="getNews()">
-        Indian Express
-    </button>
-    <span *ngIf="news?.success">
-        <button class="btn btn-info mx-2" (click)="clear()">Clear</button>
-    </span>
-</div> -->
+<div class="container">
 
-<div class="w-100">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-danger" style="margin-top: 9px;" (click)="clear()"
-                [disabled]="checkNews()">Clear</button>
+    <!--Adding tabs for news components-->
+    <p class="text-center text-secondary">
+        Browse through various National, International and Local news sources from below options. You can select your
+        respective states to get news details.
+    </p>
+    <hr>
+    <section class="my-3 p-2">
+        <div class="text-center">
+            <div class="btn-group" role="group" aria-label="Basic toggle button group">
+                <input type="button" class="btn-check" id="btncheck1" autocomplete="off">
+                <label class="btn btn-outline-dark" for="btncheck1" (click)="onOptionSelect('ie')">National</label>
 
+                <input type="button" class="btn-check" id="btncheck2" autocomplete="off">
+                <label class="btn btn-outline-dark" for="btncheck2" (click)="onOptionSelect('otv')">Local</label>
+
+                <input type="button" class="btn-check" id="btncheck3" autocomplete="off">
+                <label class="btn btn-outline-dark" for="btncheck3" (click)="onOptionSelect('ht')">International</label>
+            </div>
         </div>
+        <!-- Select your state -->
+    </section>
 
-        <select class="form-select border-0 mx-1" id="inputGroupSelect01" (change)="onOptionSelect($event)">
-            <option class="text-center" selected>Choose News Service</option>
-            <option class="text-center" value="ie">Indian Express</option>
-            <option class="text-center" value="toi">Times of India</option>
-            <option class="text-center" value="ht">Hindustan Times</option>
-            <option class="text-center" value="otv">OTV</option>
-        </select>
+
+    <div *ngIf="error">
+        <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+            Unable to fetch records from server
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
 
-</div>
-
-<div *ngIf="error">
-    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
-        Unable to fetch records from server
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div *ngIf="isLoading" class="d-flex justify-content-center">
+        <div class="spinner-border m-5" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
-</div>
-
-<div *ngIf="isLoading" class="d-flex justify-content-center">
-    <div class="spinner-border m-5" style="width: 3rem; height: 3rem;" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-</div>
 
 
-<div *ngIf="news?.success">
+    <div *ngIf="news?.success">
 
-    <div class="list-group">
-
-        <div *ngFor="let n of news?.data">
-            <div class="list-group-item list-group-item-action flex-column align-items-start my-3">
-                <div class="d-flex w-100 justify-content-between">
-                    <h4 class="mb-1">{{n.news}}</h4>
-                    <!-- <small>{{n.type | titlecase}}</small> -->
+        <div class="list-group">
+            <div class="container">
+                <div class="list-group-item list-group-item-action flex-column align-items-start my-2 rounded"
+                    *ngFor="let n of news?.data">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4">
+                                <img class="img-fluid rounded my-2" src="{{ n.image }}">
+                            </div>
+                            <div class="col-8 py-2">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{n.news}}</h5>
+                                </div>
+                                <div class="updated-time" *ngIf="n.last_updated_time">
+                                    Last Updated: </div><small>{{ n.last_updated_time }}</small>
+                                <br>
+                                <div class="row">
+                                    <div class="col">
+                                        <button class="btn btn-outline-dark mt-3" data-bs-toggle="modal"
+                                            data-bs-target="#myModal" (click)="readMore(n)">Read
+                                            More</button>
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-outline-dark mt-3" disabled>Read Summarized
+                                            Story</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- <p class="m-2 px-2" *ngIf="n.shortDescription">{{n.shortDescription}}</p> -->
-                <br>
-                <button class="btn btn-outline-dark m-1" data-bs-toggle="modal" data-bs-target="#myModal"
-                    (click)="readMore(n)">Read
-                    More</button>
             </div>
         </div>
     </div>
 
-    <div class="text-center"><button class="btn btn-light" (click)="loadMore()">Load More</button></div>
-
+    <div *ngIf="news?.data" class="text-center mt-3"><button class="btn btn-light" (click)="loadMore()">Load
+            More</button>
+        <br>
+    </div>
+    <br>
     <app-news-modal [newsTitle]="newsTitle" [newsContents]="newsContents"></app-news-modal>
 </div>

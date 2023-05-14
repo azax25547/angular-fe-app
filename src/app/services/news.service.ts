@@ -1,4 +1,4 @@
-import { News } from '../interface/indian-express';
+import { News } from '../interface/news';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';

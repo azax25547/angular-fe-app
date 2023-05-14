@@ -8,21 +8,30 @@
     box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 1px;
 }
 
-.list-group-item.h4 {
-    font-family: sans-serif;
-    font-weight: 400;
-}
 
 .list-group-item {
-    height: 150px;
+    height: 200px;
+}
+
+img {
+    max-width: 100%;
+    max-height: 75%;
 }
 
 @media screen and (max-device-width: 768px) {
     .list-group-item {
-        height: 200px;
+        height: 250px;
     }
 
-    .list-group-item.h4 {
-        font-size: 0.3em;
+    h5.mb-1 {
+        font-size: medium;
+    }
+
+    .updated-time {
+        font-size: small;
+    }
+
+    button {
+        font-size: 11px;
     }
 }
