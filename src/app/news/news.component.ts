@@ -1,4 +1,4 @@
-import { News } from '../interface/indian-express';
+import { News } from '../interface/news';
 import { Component, OnInit } from '@angular/core';
 import { NewsService } from '../services/news.service';
 import getNewsURL from '../utils/getNewsURL';
@@ -104,10 +104,16 @@ export class NewsComponent {
     this.selectedNewsService = "";
   }
 
-  onOptionSelect(event: any) {
-    this.selectedNewsService = event.target.value;
-    this._getNews(event.target.value);
-    // console.log(event.target.value)
+  onOptionSelect(newsType: string) {
+
+    if (newsType === this.selectedNewsService) {
+      if (this.news)
+        return
+    }
+
+    this.selectedNewsService = newsType;
+    this._getNews(newsType);
+    // c11onsole.log(event.target.value)
   }
 
   loadMore() {
