@@ -23,6 +23,15 @@ export class NewsComponent {
 
   }
 
+  ngOnInit() {
+    
+    if(this.ns.newsServiceProvider !== ""){
+      this.news = this.ns.news;
+      this.selectedNewsService = this.ns.newsServiceProvider;
+      this.pageNumber = this.ns.page;
+    }
+  }
+
   private _checkIfErrorResponse(data: any) {
     if (!data.success || !data.status)
       this.error = "Unable to parse data from backend. Please contact Dev."
@@ -33,13 +42,14 @@ export class NewsComponent {
     this.isLoading = true;
     this.news = undefined;
     const newsURL: string = getNewsURL(newsService);
-    this.ns.getNews(newsURL, newsService)
+      this.ns.getNews(newsURL, newsService, false)
       .subscribe({
         next: (data: News) => {
           this.news = data; this.isLoading = false
         },
         error: er => { this.error = er; this.isLoading = false; }
       })
+   
   }
 
   private _getPaginatedURL(newsService: string, newsURL: string, page: number): string {
@@ -71,8 +81,9 @@ export class NewsComponent {
     const newsURL = getNewsURL(selectedNewsService);
 
     const paginatedURL = this._getPaginatedURL(selectedNewsService, newsURL, page);
+ 
 
-    this.ns.getMoreNews(paginatedURL, selectedNewsService)
+    this.ns.getNews(paginatedURL, selectedNewsService, true)
       .subscribe({
         next: (data: News) => {
           this.news = data; this.isLoading = false;
@@ -100,7 +111,7 @@ export class NewsComponent {
       if (this.news)
         return
     }
-
+    this.pageNumber = 0;
     this.selectedNewsService = newsType;
     this._getNews(newsType);
     // c11onsole.log(event.target.value)
@@ -128,7 +139,7 @@ export class NewsComponent {
         this._getMoreNews(this.selectedNewsService, this.pageNumber)
         break;
 
-      default: console.log(0)
+      default: console.log(this.selectedNewsService)
     }
   }
 
