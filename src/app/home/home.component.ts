@@ -8,25 +8,24 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  user: User | undefined;
+  user: any;
   error: any;
   isLoading: boolean = false;
 
   constructor(private us: UserService) {}
 
   ngOnInit() {
-    {
-      if (this.us.userDetails) {
-        console.log(this.us.userDetails);
-        this.user = this.us.userDetails;
-      } else {
-        this.us
-          .getUserDetails('b0075c81-ab19-44fc-bae8-f7f1d3335899')
-          .subscribe({
-            next: (data): User => (this.user = data),
-            error: (err) => (this.error = err),
-          });
-      }
+    let userData: any = JSON.parse(sessionStorage.getItem('user') || '{}');
+    if (Object.keys(userData).length !== 0) {
+      this.user = userData;
+    } else {
+      this.us
+        .getUserDetailOne('b0075c81-ab19-44fc-bae8-f7f1d3335899')
+        .subscribe({
+          next: (data: any) =>
+            sessionStorage.setItem('user', JSON.stringify(data)),
+          error: (err) => (this.error = err),
+        });
     }
   }
 }

@@ -1,93 +1,115 @@
-<p>finance works! {{ userDetails?.name }}</p>
 <section>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-4 p-4">
-                <button class="btn btn-primary">Create Expense</button>
-                <table class="table text-center" *ngIf="userExpenses">
-                    <thead class="table-light">
-                        <tr>
-                            <td>Name</td>
-                            <td>Description</td>
-                            <td>Value</td>
-                            <td>Date of expense</td>
-                            <td>Mode of expense</td>
-                            <td>category</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let e of userExpenses?.expenses">
-                            <td *ngIf="e.name === ''; else empty">{{ e.name }}</td>
-                            <td *ngIf="e.description === ''; else empty">{{ e.description }}</td>
-                            <td>{{ e.value }}</td>
-                            <td>{{ e.dateOfExpense | date:'dd/mm/yyyy' }}</td>
-                            <td>{{ e.modeOfExpense }}</td>
-                            <td>{{ e.category.category }}</td>
+            <div class="col-md-3 sidebar">
+                <h3>Sections</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" (click)="switchScreen('Expense')">My expenses</li>
+                    <li class="list-group-item" (click)="switchScreen('Subscription')">My subscriptions</li>
+                    <li class="list-group-item" (click)="switchScreen('Income')">My Incomes</li>
+                </ul>
+            </div>
+            <div class="col-md-9 content">
+                <div class="row">
+                    <section *ngIf="showD">
+                        Welcome to Finance Dashboard {{ userDetails?.name }}
+                    </section>
+                    <div class="col-lg-4 p-4" *ngIf="userExpenses && screen === 'Expense'">
+                        <div *ngIf="isLoading" class="d-flex justify-content-center">
+                            <div class="spinner-border m-5" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <app-chart></app-chart>
+                        <button class="btn btn-primary " (click)="openExpenseModal()">Create Expense</button>
+                        <table class="table text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Description</td>
+                                    <td>Value</td>
+                                    <td>Date of expense</td>
+                                    <td>Mode of expense</td>
+                                    <td>category</td>
+                                    <td>Edit</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let e of userExpenses?.expenses">
+                                    <td *ngIf="e.name !== null; else empty">{{ e.name }}</td>
+                                    <td *ngIf="e.description !== null; else empty">{{ e.description }}</td>
+                                    <td>{{ e.value }}</td>
+                                    <td>{{ convertIsoToDdMmYyyy(e.dateOfExpense) }}</td>
+                                    <td>{{ e.modeOfExpense }}</td>
+                                    <td>{{ e.category.category }}</td>
+                                    <td> <button type="button" (click)="editExpenseModal(e.id)">Edit</button> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-4 p-4" *ngIf="userSubscriptions && screen === 'Subscription'">
+                        <button class="btn btn-primary  ">Create Subscription</button>
+                        <table class="table text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Description</td>
+                                    <td>Value</td>
+                                    <td>Type of Subscription</td>
+                                    <td>Date of Start</td>
+                                    <td>Date of End</td>
+                                    <td>Date of Next Payment</td>
+                                    <td>Reminder</td>
+                                    <td>Active</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let s of userSubscriptions?.subscriptions">
+                                    <td>{{ s.name}}</td>
+                                    <td>{{ s.description}}</td>
+                                    <td>{{ s.value}}</td>
+                                    <td>{{ s.subType}}</td>
+                                    <td>{{ s.dateOfStart | date:'dd/mm/yyyy'}}</td>
+                                    <td>{{ s.dateOfEnd | date:'dd/mm/yyyy' }}</td>
+                                    <td>{{ s.dateOfNextPayment| date:'dd/mm/yyyy' }}</td>
+                                    <td *ngIf="s.reminder; else disabled">
+                                        <input type="checkbox" name="checked" id="reminder" checked disabled>
+                                    </td>
+                                    <td *ngIf="s.active; else disabled">
+                                        <input type="checkbox" name="checked" id="active" checked disabled>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-4 p-4" *ngIf="userIncomes  && screen === 'Income'">
+                        <button class="btn btn-primary  ">Create Income</button>
+                        <table class="table text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Description</td>
+                                    <td>Value</td>
+                                    <td>Mode of Income</td>
+                                    <td>Date of Income</td>
+                                    <td>Income Type</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let i of userIncomes?.incomes">
+                                    <td>{{ i.name}}</td>
+                                    <td>{{ i.description}}</td>
+                                    <td>{{ i.value}}</td>
+                                    <td>{{ i.modeOfIncome}}</td>
+                                    <td>{{ i.dateOfIncome | date:'dd/mm/yyyy' }}</td>
+                                    <td>{{ i.incomeType}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-lg-4 p-4">
-                <button class="btn btn-primary">Create Subscription</button>
-                <table class="table text-center" *ngIf="userSubscriptions">
-                    <thead class="table-light">
-                        <tr>
-                            <td>Name</td>
-                            <td>Description</td>
-                            <td>Value</td>
-                            <td>Type of Subscription</td>
-                            <td>Date of Start</td>
-                            <td>Date of End</td>
-                            <td>Date of Next Payment</td>
-                            <td>Reminder</td>
-                            <td>Active</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let s of userSubscriptions?.subscriptions">
-                            <td>{{ s.name}}</td>
-                            <td>{{ s.description}}</td>
-                            <td>{{ s.value}}</td>
-                            <td>{{ s.subType}}</td>
-                            <td>{{ s.dateOfStart | date:'dd/mm/yyyy'}}</td>
-                            <td>{{ s.dateOfEnd | date:'dd/mm/yyyy' }}</td>
-                            <td>{{ s.dateOfNextPayment| date:'dd/mm/yyyy' }}</td>
-                            <td *ngIf="s.reminder; else disabled">
-                                <input type="checkbox" name="checked" id="reminder" checked disabled>
-                            </td>
-                            <td *ngIf="s.active; else disabled">
-                                <input type="checkbox" name="checked" id="active" checked disabled>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-lg-4 p-4">
-                <button class="btn btn-primary">Create Income</button>
-                <table class="table text-center" *ngIf="userIncomes">
-                    <thead class="table-light">
-                        <tr>
-                            <td>Name</td>
-                            <td>Description</td>
-                            <td>Value</td>
-                            <td>Mode of Income</td>
-                            <td>Date of Income</td>
-                            <td>Income Type</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let i of userIncomes?.incomes">
-                            <td>{{ i.name}}</td>
-                            <td>{{ i.description}}</td>
-                            <td>{{ i.value}}</td>
-                            <td>{{ i.modeOfIncome}}</td>
-                            <td>{{ i.dateOfIncome | date:'dd/mm/yyyy' }}</td>
-                            <td>{{ i.incomeType}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div><!--Expense Table-->
     <ng-template #empty>

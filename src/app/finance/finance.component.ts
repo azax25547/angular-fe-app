@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { User } from '../interface/user';
 import { FinanceService } from '../services/finance.service';
 import { Expense } from '../interface/expense';
 import { Subscription } from '../interface/subscription';
 import { Income } from '../interface/income';
+import { ModalService } from '../services/modal.service';
+import { ExpenseformComponent } from './expenseform/expenseform.component';
+import { Subject } from 'rxjs';
+import convert from '../utils/convertISOtoDate';
 
 @Component({
   selector: 'app-finance',
@@ -12,15 +16,52 @@ import { Income } from '../interface/income';
   styleUrls: ['./finance.component.css'],
 })
 export class FinanceComponent {
-  userDetails: User | undefined;
+  userDetails: any;
   userExpenses: Expense | undefined;
   userSubscriptions: Subscription | undefined;
   userIncomes: Income | undefined;
+  screen: string = '';
+  isLoading: boolean = false;
+  showD: boolean = true;
+  categories: [] = [];
 
   error: any;
 
-  constructor(private us: UserService, private fs: FinanceService) {
-    this.userDetails = this.us.userDetails;
+  constructor(
+    private us: UserService,
+    private fs: FinanceService,
+    private ms: ModalService
+  ) {
+    this.ms.notifyParent$.subscribe((d) => {
+      if (d === 'expense')
+        this.getFinanceDetails(this.userDetails?.id || '', 'Expense');
+      else if (d === 'subscriptions')
+        this.getFinanceDetails(this.userDetails?.id || '', 'Subscription');
+      else if (d === 'incomes')
+        this.getFinanceDetails(this.userDetails?.id || '', 'Income');
+    });
+  }
+
+  switchScreen(screen: string) {
+    this.screen = screen;
+    this.showD = false;
+  }
+
+  convertIsoToDdMmYyyy(isoDate: string): string {
+    return convert(isoDate);
+  }
+
+  openExpenseModal() {
+    this.ms.openModal();
+  }
+
+  editExpenseModal(id: any) {
+    const data = this.userExpenses?.expenses.filter((v) => v.id == id);
+    let formData = {
+      data,
+      mode: 'edit',
+    };
+    this.ms.editModal(formData);
   }
 
   getFinanceDetails(userID: string, type: string) {
@@ -49,6 +90,8 @@ export class FinanceComponent {
   }
 
   ngOnInit() {
+    let userSessionDetails: any = sessionStorage.getItem('user');
+    this.userDetails = JSON.parse(userSessionDetails);
     this.getFinanceDetails(this.userDetails?.id || '', 'Expense');
     this.getFinanceDetails(this.userDetails?.id || '', 'Subscription');
     this.getFinanceDetails(this.userDetails?.id || '', 'Income');

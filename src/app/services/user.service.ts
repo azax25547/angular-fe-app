@@ -23,8 +23,7 @@ export class UserService {
     });
   }
 
-  getUserDetails(id: string) {
-    this.subscribeUserDetails(this.http.get<User>(this.userServiceURL + id));
+  getUserDetailOne(id: string): Observable<User> {
     return this.http.get<User>(this.userServiceURL + id);
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, ObservedValueOf } from 'rxjs';
 import { EnvService } from './env.service';
 
 @Injectable({
@@ -19,6 +19,29 @@ export class FinanceService {
       next: (data): Observable<any> => (serviceDataHolder = data),
       error: (err) => (this.error = err),
     });
+  }
+
+  saveExpenseDetails(body: any): Observable<any> {
+    let response: any = this.http.post(
+      `${this.financeServiceURL}expenses/create`,
+      body
+    );
+    return response;
+  }
+
+  updateExpenseDetails(body: any, id: any): Observable<any> {
+    let response: any = this.http.put(
+      `${this.financeServiceURL}expenses/update/${id}`,
+      body
+    );
+    return response;
+  }
+
+  getAllExpenseCategories(): Observable<any> {
+    let response: any = this.http.get(
+      `${this.financeServiceURL}expenses/categories`
+    );
+    return response;
   }
 
   getAllFinanceDetails(userid: string, type: string) {
