@@ -1,0 +1,57 @@
+<form [formGroup]="subscriptionForm" (ngSubmit)="onSubscriptionSubmit()">
+    <div class="form-group">
+        <input type="text" id="name" formControlName="name" class="form-control" placeholder="Subscription Name"
+            [ngClass]="{ 'error': subscriptionForm.get('name')!.invalid && subscriptionForm.get('name')!.touched }"
+            required>
+    </div>
+    <div class="form-group">
+        <input type="text" id="description" formControlName="description" class="form-control"
+            placeholder="Description for Subscription"
+            [ngClass]="{ 'error': subscriptionForm.get('description')!.invalid && subscriptionForm.get('description')!.touched }"
+            required>
+    </div>
+    <div class="form-group">
+        <input type="text" id="value" formControlName="value" class="form-control" placeholder="Amount"
+            [ngClass]="{ 'error': subscriptionForm.get('value')!.invalid && subscriptionForm.get('value')!.touched }"
+            required>
+    </div>
+    <div class="form-group">
+        <select id="category" formControlName="subType" class="form-control" placeholder="Category" [ngModel]="null"
+            required>
+            <option [ngValue]="null" [disabled]="true" selected>Select the Subscription type</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Quarterly">Quarterly</option>
+            <option value="Yearly">Yearly</option>
+
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="date" id="dateOfStart" formControlName="dateOfStart" class="form-control" placeholder="Start Date"
+            [ngClass]="{ 'error': subscriptionForm.get('dateOfStart')!.invalid && subscriptionForm.get('dateOfStart')!.touched }"
+            required>
+    </div>
+    <div class="form-group">
+        <input type="date" id="dateOfEnd" formControlName="dateOfEnd" class="form-control" placeholder="End Date"
+            [ngClass]="{ 'error': subscriptionForm.get('dateOfEnd')!.invalid && subscriptionForm.get('dateOfEnd')!.touched }"
+            required>
+    </div>
+    <div class="form-group">
+        <input type="date" id="dateOfNextPayment" formControlName="dateOfNextPayment" class="form-control"
+            [ngClass]="{ 'error': subscriptionForm.get('dateOfNextPayment')!.invalid && subscriptionForm.get('dateOfNextPayment')!.touched }"
+            placeholder="Date of the Next Payment" required>
+    </div>
+    <div class="form-group">
+        <label for="reminder"><strong>Is Reminder Required?</strong></label>
+        <input class="pl-2 ml-2 mx-2" type="checkbox" id="reminder" formControlName="reminder">
+    </div>
+    <div class="form-group">
+        <label for="active"><strong>Is Subscription Active?</strong></label>
+        <input class="pl-2 ml-2 mx-2" type="checkbox" id="active" formControlName="active">
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="subscriptionForm.invalid"
+        *ngIf="record && record?.data">Update</button>
+    <button *ngIf="!isUpdate" type="submit" class="btn btn-primary" [disabled]="subscriptionForm.invalid">Save</button>
+    <button type="button" (click)="closeModal()" class="btn btn-primary mx-3">Close</button>
+</form>

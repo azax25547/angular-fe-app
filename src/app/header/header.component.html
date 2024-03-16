@@ -5,6 +5,16 @@
             </li>
             <li class="nav-item"><a routerLink="/news" class="text-dark nav-link" aria-current="page">News</a>
             </li>
+            <li class="nav-item" *ngIf="isAuth"><a routerLink="/finance" class="text-dark nav-link"
+                    aria-current="page">Finance</a>
+            </li>
+            <li class="nav-item" *ngIf="isAuth"><button class="btn btn-link" (click)="logout()">Log out</button>
+            </li>
+
+            <li class="nav-item" *ngIf="!isAuth"><a routerLink="/auth" class="text-dark nav-link"
+                    aria-current="page">Log
+                    In</a>
+            </li>
 
         </ul>
     </nav>

@@ -1,0 +1,13 @@
+<div class="modal-container">
+    <div *ngIf="component === 'expense'">
+        <app-expenseform></app-expenseform>
+    </div>
+
+    <div *ngIf="component === 'subscription'">
+        <app-subscriptionform></app-subscriptionform>
+    </div>
+
+    <div *ngIf="component === 'income'">
+        <app-incomeform></app-incomeform>
+    </div>
+</div>
