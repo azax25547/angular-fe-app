@@ -20,6 +20,21 @@ export class FinanceService {
       error: (err) => (this.error = err),
     });
   }
+  saveIncomeDetails(body: any): Observable<any> {
+    let response: any = this.http.post(
+      `${this.financeServiceURL}incomes/create`,
+      body
+    );
+    return response;
+  }
+
+  saveSubscriptionDetails(body: any): Observable<any> {
+    let response: any = this.http.post(
+      `${this.financeServiceURL}subscriptions/create`,
+      body
+    );
+    return response;
+  }
 
   saveExpenseDetails(body: any): Observable<any> {
     let response: any = this.http.post(
@@ -32,6 +47,22 @@ export class FinanceService {
   updateExpenseDetails(body: any, id: any): Observable<any> {
     let response: any = this.http.put(
       `${this.financeServiceURL}expenses/update/${id}`,
+      body
+    );
+    return response;
+  }
+
+  updateSubscriptionDetails(body: any, id: any): Observable<any> {
+    let response: any = this.http.put(
+      `${this.financeServiceURL}subscriptions/update/${id}`,
+      body
+    );
+    return response;
+  }
+
+  updateIncomeDetails(body: any, id: any): Observable<any> {
+    let response: any = this.http.put(
+      `${this.financeServiceURL}incomes/update/${id}`,
       body
     );
     return response;

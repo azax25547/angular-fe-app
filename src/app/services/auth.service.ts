@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   isUserAuthenticated() {
-    return this.isAuthenticated;
+    return this.retrieveUserToken() !== null;
   }
 
   sendLoginDetails(body: any): Observable<any> {
@@ -31,5 +31,16 @@ export class AuthService {
 
   retrieveUserToken(): string {
     return sessionStorage.getItem('token')!;
+  }
+
+  logoutUser() {
+    this.setAuthenticated(false);
+    sessionStorage.clear();
+    this.http.get('http://localhost:3000/api/v1/auth/logout').subscribe({
+      next: (d) => {
+        // do something
+      },
+      error: (err) => console.log(err),
+    });
   }
 }

@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -8,17 +7,18 @@ import { ModalService } from 'src/app/services/modal.service';
 import convert from 'src/app/utils/convertISOtoDate';
 
 @Component({
-  selector: 'app-expenseform',
-  templateUrl: './expenseform.component.html',
-  styleUrls: ['./expenseform.component.css'],
+  selector: 'app-incomeform',
+  templateUrl: './incomeform.component.html',
+  styleUrls: ['./incomeform.component.css'],
 })
-export class ExpenseformComponent {
-  expenseForm: FormGroup;
+export class IncomeformComponent {
+  incomeForm: FormGroup;
   categories: any = [];
   subModule: any = '';
   record: any;
   isUpdate: any = false;
   @Input() dataFromComponent: any;
+
   constructor(
     private ms: ModalService,
     private formBuilder: FormBuilder,
@@ -29,58 +29,51 @@ export class ExpenseformComponent {
     this.record = this.ms.formData;
     if (this.record.data && this.record.data.isUpdate) this.isUpdate = true;
 
-    this.fs.getAllExpenseCategories().subscribe({
-      next: (data: any) => {
-        this.categories = data?.allExpenseCategories;
-      },
-      error: (err: any) => this.toastr.error(err.message, 'Error'),
-    });
-
-    this.expenseForm = this.formBuilder.group({
+    this.incomeForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       value: [
         '',
         [Validators.required, Validators.min(0), Validators.max(10000000)],
       ],
-      dateOfExpense: ['', Validators.required],
-      modeOfExpense: ['', Validators.required],
-      expenseId: ['', Validators.required],
+      incomeType: ['', Validators.required],
+      dateOfIncome: [''],
+      modeOfIncome: [''],
     });
 
     if (this.record?.data && this.isUpdate) {
-      console.log(convert(this.record.data[0].dateOfExpense));
-      this.expenseForm.setValue({
+      this.incomeForm.setValue({
         name: this.record.data[0].name,
         description: this.record.data[0].description,
         value: this.record.data[0].value,
-        dateOfExpense: convert(this.record.data[0].dateOfExpense),
-        modeOfExpense: this.record.data[0].modeOfExpense,
-        expenseId: this.record.data[0].category.category,
+        incomeType: this.record.data[0].incomeType,
+
+        dateOfIncome: convert(this.record.data[0].dateOfIncome),
+        modeOfIncome: this.record.data[0].modeOfIncome,
       });
     }
   }
 
   closeModal(): void {
     this.ms.formData = undefined;
-    this.isUpdate = false;
     this.ms.closeModal();
+    this.isUpdate = false;
   }
 
-  onExpenseSubmit() {
+  onIncomeSubmit() {
     if (this.isUpdate) {
-      if (this.record && this.expenseForm.valid) {
-        const expenseId: any = this.record.data[0].id;
+      if (this.record && this.incomeForm.valid) {
+        const incomeId: any = this.record.data[0].id;
         let body = {
-          ...this.expenseForm.value,
+          ...this.incomeForm.value,
         };
-        this.fs.updateExpenseDetails(body, expenseId).subscribe({
+        this.fs.updateIncomeDetails(body, incomeId).subscribe({
           next: (data) => {
-            this.toastr.success('Expense updated Successfully.', 'Success', {
+            this.toastr.success('Income updated Successfully.', 'Success', {
               closeButton: true,
             });
             this.closeModal();
-            this.ms.notifyParent('expense');
+            this.ms.notifyParent('income');
             this.isUpdate = false;
           },
           error: (err) => {
@@ -99,19 +92,19 @@ export class ExpenseformComponent {
         );
       }
     } else {
-      if (this.expenseForm.valid) {
+      if (this.incomeForm.valid) {
         const userId: any = this.jwt.decodeToken().id;
         let body = {
-          ...this.expenseForm.value,
+          ...this.incomeForm.value,
           userId,
         };
-        this.fs.saveExpenseDetails(body).subscribe({
+        this.fs.saveIncomeDetails(body).subscribe({
           next: (data) => {
-            this.toastr.success('Expense saved Successfully.', 'Success', {
+            this.toastr.success('Income saved Successfully.', 'Success', {
               closeButton: true,
             });
             this.closeModal();
-            this.ms.notifyParent('expense');
+            this.ms.notifyParent('income');
           },
           error: (err) => {
             this.toastr.error(err.error.message, 'Unsucessful', {

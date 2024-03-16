@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -8,12 +7,12 @@ import { ModalService } from 'src/app/services/modal.service';
 import convert from 'src/app/utils/convertISOtoDate';
 
 @Component({
-  selector: 'app-expenseform',
-  templateUrl: './expenseform.component.html',
-  styleUrls: ['./expenseform.component.css'],
+  selector: 'app-subscriptionform',
+  templateUrl: './subscriptionform.component.html',
+  styleUrls: ['./subscriptionform.component.css'],
 })
-export class ExpenseformComponent {
-  expenseForm: FormGroup;
+export class SubscriptionformComponent {
+  subscriptionForm: FormGroup;
   categories: any = [];
   subModule: any = '';
   record: any;
@@ -29,58 +28,59 @@ export class ExpenseformComponent {
     this.record = this.ms.formData;
     if (this.record.data && this.record.data.isUpdate) this.isUpdate = true;
 
-    this.fs.getAllExpenseCategories().subscribe({
-      next: (data: any) => {
-        this.categories = data?.allExpenseCategories;
-      },
-      error: (err: any) => this.toastr.error(err.message, 'Error'),
-    });
-
-    this.expenseForm = this.formBuilder.group({
+    this.subscriptionForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       value: [
         '',
         [Validators.required, Validators.min(0), Validators.max(10000000)],
       ],
-      dateOfExpense: ['', Validators.required],
-      modeOfExpense: ['', Validators.required],
-      expenseId: ['', Validators.required],
+      subType: ['', Validators.required],
+      dateOfStart: [''],
+      dateOfEnd: [''],
+      dateOfNextPayment: [''],
+      reminder: [false],
+      active: [false],
     });
 
     if (this.record?.data && this.isUpdate) {
-      console.log(convert(this.record.data[0].dateOfExpense));
-      this.expenseForm.setValue({
+      this.subscriptionForm.setValue({
         name: this.record.data[0].name,
         description: this.record.data[0].description,
         value: this.record.data[0].value,
-        dateOfExpense: convert(this.record.data[0].dateOfExpense),
-        modeOfExpense: this.record.data[0].modeOfExpense,
-        expenseId: this.record.data[0].category.category,
+        subType: this.record.data[0].subType,
+        reminder: this.record.data[0].reminder,
+        active: this.record.data[0].active,
+        dateOfStart: convert(this.record.data[0].dateOfStart),
+        dateOfEnd: convert(this.record.data[0].dateOfEnd),
+        dateOfNextPayment: convert(this.record.data[0].dateOfEnd),
       });
     }
   }
 
   closeModal(): void {
     this.ms.formData = undefined;
-    this.isUpdate = false;
     this.ms.closeModal();
   }
 
-  onExpenseSubmit() {
+  onSubscriptionSubmit() {
     if (this.isUpdate) {
-      if (this.record && this.expenseForm.valid) {
-        const expenseId: any = this.record.data[0].id;
+      if (this.record && this.subscriptionForm.valid) {
+        const subscriptionId: any = this.record.data[0].id;
         let body = {
-          ...this.expenseForm.value,
+          ...this.subscriptionForm.value,
         };
-        this.fs.updateExpenseDetails(body, expenseId).subscribe({
+        this.fs.updateSubscriptionDetails(body, subscriptionId).subscribe({
           next: (data) => {
-            this.toastr.success('Expense updated Successfully.', 'Success', {
-              closeButton: true,
-            });
+            this.toastr.success(
+              'Subscription updated Successfully.',
+              'Success',
+              {
+                closeButton: true,
+              }
+            );
             this.closeModal();
-            this.ms.notifyParent('expense');
+            this.ms.notifyParent('subscription');
             this.isUpdate = false;
           },
           error: (err) => {
@@ -99,19 +99,19 @@ export class ExpenseformComponent {
         );
       }
     } else {
-      if (this.expenseForm.valid) {
+      if (this.subscriptionForm.valid) {
         const userId: any = this.jwt.decodeToken().id;
         let body = {
-          ...this.expenseForm.value,
+          ...this.subscriptionForm.value,
           userId,
         };
-        this.fs.saveExpenseDetails(body).subscribe({
+        this.fs.saveSubscriptionDetails(body).subscribe({
           next: (data) => {
-            this.toastr.success('Expense saved Successfully.', 'Success', {
+            this.toastr.success('Subscription saved Successfully.', 'Success', {
               closeButton: true,
             });
             this.closeModal();
-            this.ms.notifyParent('expense');
+            this.ms.notifyParent('subscription');
           },
           error: (err) => {
             this.toastr.error(err.error.message, 'Unsucessful', {

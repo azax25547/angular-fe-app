@@ -14,7 +14,7 @@ export class ModalService {
   formData: any = [];
   error: any = '';
   private notifyParentSubject: Subject<any> = new Subject<any>();
-  constructor(private dialog: MatDialog, private fs: FinanceService) {}
+  constructor(private dialog: MatDialog) {}
 
   notifyParent$ = this.notifyParentSubject.asObservable();
 
@@ -22,18 +22,25 @@ export class ModalService {
     this.notifyParentSubject.next(v);
   }
 
-  editModal(dt: any) {
+  editModal(dt: any, comp: string) {
     this.formData = dt;
     this.dialog.open(ModalComponent, {
       width: '600px',
       height: '400px',
+      data: {
+        component: comp,
+      },
     });
   }
 
-  openModal() {
+  openModal(dt: any, comp: string) {
+    this.formData = dt;
     this.dialog.open(ModalComponent, {
       width: '600px',
       height: '400px',
+      data: {
+        component: comp,
+      },
     });
   }
 

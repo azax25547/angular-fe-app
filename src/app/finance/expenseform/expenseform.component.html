@@ -10,31 +10,38 @@
             required>
     </div>
     <div class="form-group">
-        <input type="text" id="value" formControlName="value" class="form-control" placeholder="Amount"
+        <input type="number" id="value" formControlName="value" class="form-control" placeholder="Amount"
             [ngClass]="{ 'error': expenseForm.get('value')!.invalid && expenseForm.get('value')!.touched }" required>
     </div>
     <div class="form-group">
         <input type="date" id="dateOfExpense" formControlName="dateOfExpense" class="form-control"
             placeholder="Date of Expense"
-            [ngClass]="{ 'error': expenseForm.get('dateOfExpense')!.invalid && expenseForm.get('dateOfExpense')!.touched }"
+            [ngClass]="{ 'error': expenseForm.get('dateOfExpense')!.invalid && expenseForm.get('dateOfExpense')!.touched}"
             required>
     </div>
     <div class="form-group">
-        <input type="text" id="modeOfExpense" formControlName="modeOfExpense" class="form-control"
-            placeholder="Mode of Expense"
-            [ngClass]="{ 'error': expenseForm.get('modeOfExpense')!.invalid && expenseForm.get('modeOfExpense')!.touched }"
-            required>
-    </div>
-    <div class="form-group">
-        <select id="category" formControlName="expenseId" class="form-control" placeholder="Category"
+        <select id="modeOfExpense" formControlName="modeOfExpense" class="form-control" [ngModel]="null"
             [ngClass]="{ 'error': expenseForm.get('expenseId')!.invalid && expenseForm.get('expenseId')!.touched }"
             required>
+            <option [ngValue]="null" [disabled]="true" selected>Select the Mode of Transaction</option>
+            <option value="UPI">UPI</option>
+            <option value="CASH">Cash</option>
+            <option value="DEBIT CARD">Debit Card</option>
+            <option value="CREDIT CARD">Credit Card</option>
+        </select>
+
+    </div>
+    <div class="form-group">
+        <select id="category" formControlName="expenseId" class="form-control" [ngModel]="null"
+            [ngClass]="{ 'error': expenseForm.get('expenseId')!.invalid && expenseForm.get('expenseId')!.touched }"
+            required>
+            <option [ngValue]="null" [disabled]="true" selected>Select a Category</option>
             <option *ngFor="let c of categories" [value]="c.id">{{c.category}}</option>
 
         </select>
     </div>
     <button type="submit" class="btn btn-primary" [disabled]="expenseForm.invalid"
         *ngIf="record && record?.data">Update</button>
-    <button *ngIf="!record" type="submit" class="btn btn-primary" [disabled]="expenseForm.invalid">Save</button>
-    <button type="button" (click)="closeModal()" class="btn btn-primary">Close</button>
+    <button *ngIf="!isUpdate" type="submit" class="btn btn-primary" [disabled]="expenseForm.invalid">Save</button>
+    <button type="button" (click)="closeModal()" class="btn btn-primary mx-3">Close</button>
 </form>

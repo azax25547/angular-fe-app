@@ -19,6 +19,8 @@ import { ChartComponent } from './chart/chart.component';
 import { LoginComponent } from './login/login.component';
 import { ModalComponent } from './modal/modal.component';
 import { ExpenseformComponent } from './finance/expenseform/expenseform.component';
+import { SubscriptionformComponent } from './finance/subscriptionform/subscriptionform.component';
+import { IncomeformComponent } from './finance/incomeform/incomeform.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { ExpenseformComponent } from './finance/expenseform/expenseform.componen
     LoginComponent,
     ModalComponent,
     ExpenseformComponent,
+    SubscriptionformComponent,
+    IncomeformComponent,
   ],
   imports: [
     BrowserModule,

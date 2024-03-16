@@ -45,6 +45,7 @@ export class LoginComponent {
         next: (data) => {
           if (data && data.status) {
             this.auth.storeUserToken(data.user.token);
+            this.auth.setAuthenticated(true);
             this.toastr.success('Login Successful', 'Info', {
               closeButton: true,
             });
@@ -88,6 +89,10 @@ export class LoginComponent {
                 closeButton: true,
               }
             );
+          } else {
+            this.toastr.warning(data.message, 'Warning', {
+              closeButton: true,
+            });
           }
         },
         error: (err) => {
