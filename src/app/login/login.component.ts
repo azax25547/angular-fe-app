@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
   signupForm: FormGroup;
+  isLogin: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,6 +30,10 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+  }
+
+  toggleLogIn() {
+    this.isLogin = !this.isLogin;
   }
 
   onLogin() {
@@ -49,6 +54,7 @@ export class LoginComponent {
             this.toastr.success('Login Successful', 'Info', {
               closeButton: true,
             });
+            this.signupForm.reset();
             this.router.navigate(['/finance']);
           }
         },
@@ -89,6 +95,8 @@ export class LoginComponent {
                 closeButton: true,
               }
             );
+            this.signupForm.reset();
+            this.toggleLogIn();
           } else {
             this.toastr.warning(data.message, 'Warning', {
               closeButton: true,
