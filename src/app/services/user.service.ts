@@ -14,7 +14,7 @@ export class UserService {
 
   userServiceURL: string = this.env.enableDebug
     ? 'http://localhost:3000/api/v1/users/'
-    : 'x';
+    : 'https://test-finance.onrender.com/api/v1/users/';
 
   subscribeUserDetails(us: Observable<User>) {
     us.subscribe({

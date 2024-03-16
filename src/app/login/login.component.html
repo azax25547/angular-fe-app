@@ -1,6 +1,18 @@
+<div class="container mt-2 p-3">
+    <div class="row justify-content-center">
+        <div class="display-3 text-center my-4">
+            Welcome!
+        </div>
+        <button [ngClass]="isLogin === true ? 'btn btn-outline-info w-50 active' : 'btn btn-outline-info  w-50'"
+            (click)="toggleLogIn()">Login</button>
+        <button [ngClass]="isLogin === false ? 'btn btn-outline-info w-50 active' : 'btn btn-outline-info w-50'"
+            (click)="toggleLogIn()">Signup</button>
+    </div>
+</div>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="isLogin">
             <div class="card">
                 <div class="card-header">Login</div>
                 <div class="card-body">
@@ -13,17 +25,12 @@
                             <label for="password">Password</label>
                             <input type="password" id="password" formControlName="password" class="form-control">
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="submit" class="btn btn-outline-primary w-100 mt-4">Login</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="!isLogin">
             <div class="card">
                 <div class="card-header">Sign Up</div>
                 <div class="card-body">
@@ -38,9 +45,10 @@
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" id="password" formControlName="password" class="form-control">
+                            <input type="password" id="password" formControlName="password" class="form-control"
+                                [ngClass]="{ 'error': signupForm.get('password')!.invalid  }">
                         </div>
-                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                        <button type="submit" class="btn btn-outline-info w-100 mt-4">Sign Up</button>
                     </form>
                 </div>
             </div>

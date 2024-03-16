@@ -12,7 +12,7 @@ export class FinanceService {
   //   expenses: Expense[] | undefined;
   financeServiceURL: string = this.env.enableDebug
     ? 'http://localhost:3000/api/v1/'
-    : 'x';
+    : 'https://test-finance.onrender.com/api/v1/';
 
   subscribeDetails(service: Observable<any>, serviceDataHolder: any) {
     service.subscribe({

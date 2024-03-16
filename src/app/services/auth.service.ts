@@ -1,13 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { EnvService } from './env.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   isAuthenticated: boolean = false;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private env: EnvService) {}
+  authServiceURL: string = this.env.enableDebug
+    ? 'http://localhost:3000/api/v1/auth/'
+    : 'https://test-finance.onrender.com/api/v1/auth';
 
   setAuthenticated(v: boolean) {
     this.isAuthenticated = v;
@@ -18,11 +22,11 @@ export class AuthService {
   }
 
   sendLoginDetails(body: any): Observable<any> {
-    return this.http.post('http://localhost:3000/api/v1/auth/login', body);
+    return this.http.post(`${this.authServiceURL}/login`, body);
   }
 
   sendSignUpDetails(body: any): Observable<any> {
-    return this.http.post('http://localhost:3000/api/v1/auth/signup', body);
+    return this.http.post(`${this.authServiceURL}/signup`, body);
   }
 
   storeUserToken(token: string) {
@@ -36,7 +40,7 @@ export class AuthService {
   logoutUser() {
     this.setAuthenticated(false);
     sessionStorage.clear();
-    this.http.get('http://localhost:3000/api/v1/auth/logout').subscribe({
+    this.http.get(`${this.authServiceURL}/logout`).subscribe({
       next: (d) => {
         // do something
       },
