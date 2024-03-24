@@ -1,7 +1,9 @@
 import { formatDate } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { AgBaseComponentComponent } from 'src/app/ag-base-component/ag-base-component.component';
+import { AgDataService } from 'src/app/services/ag-data.service';
 import { FinanceService } from 'src/app/services/finance.service';
 import { JwtService } from 'src/app/services/jwt.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -24,7 +26,8 @@ export class ExpenseformComponent {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private fs: FinanceService,
-    private jwt: JwtService
+    private jwt: JwtService,
+    private ds: AgDataService
   ) {
     this.record = this.ms.formData;
     if (this.record.data && this.record.data.isUpdate) this.isUpdate = true;
@@ -112,6 +115,7 @@ export class ExpenseformComponent {
             });
             this.closeModal();
             this.ms.notifyParent('expense');
+            // this.ds.setData
           },
           error: (err) => {
             this.toastr.error(err.error.message, 'Unsucessful', {

@@ -1,3 +1,6 @@
+.grid {
+    height: 500px;
+}
 /* Style for the fixed sidebar */
 .sidebar {
     height: 100%;
@@ -14,6 +17,7 @@
     margin-left: 270px;
     /* Adjust this value to match your sidebar width */
     padding: 20px;
+    width: 70vw;
 }
 
 .list-group-item {

@@ -10,7 +10,7 @@ export class AuthService {
   isAuthenticated: boolean = false;
   constructor(private http: HttpClient, private env: EnvService) {}
   authServiceURL: string = this.env.enableDebug
-    ? 'http://localhost:3000/api/v1/auth/'
+    ? 'http://localhost:3000/api/v1/auth'
     : 'https://test-finance.onrender.com/api/v1/auth';
 
   setAuthenticated(v: boolean) {

@@ -21,6 +21,8 @@ import { ModalComponent } from './modal/modal.component';
 import { ExpenseformComponent } from './finance/expenseform/expenseform.component';
 import { SubscriptionformComponent } from './finance/subscriptionform/subscriptionform.component';
 import { IncomeformComponent } from './finance/incomeform/incomeform.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { AgBaseComponentComponent } from './ag-base-component/ag-base-component.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { IncomeformComponent } from './finance/incomeform/incomeform.component';
     ExpenseformComponent,
     SubscriptionformComponent,
     IncomeformComponent,
+    AgBaseComponentComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { IncomeformComponent } from './finance/incomeform/incomeform.component';
       preventDuplicates: true,
       closeButton: true,
     }),
+    AgGridModule,
   ],
   providers: [EnvServiceProvider],
   bootstrap: [AppComponent],
